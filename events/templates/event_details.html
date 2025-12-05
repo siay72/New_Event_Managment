@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ event.name }} | Event Details{% endblock %}
+
+{% block content %}
+<section class="bg-gray-500 p-6">
+  <div class="max-w-5xl mx-auto px-6">
+
+      <div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="px-3 py-2 mb-4 rounded-md text-white
+                    {% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+    {% if event %}
+    <!-- Main Event Card -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+      <img src="{{ event.asset.url }}"
+     alt="{{ event.name }}"
+     class="w-full sm:w-1/2 h-64 object-cover rounded-t-lg mx-auto sm:rounded-lg shadow-md mb-6 mt-4">
+
+      <div class="p-8">
+        <!-- Event Title -->
+        <h1 class="text-3xl font-bold text-gray-900 mb-3">{{ event.name }}</h1>
+
+        <!-- Event Info -->
+        <div class="text-gray-600 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <p class="mb-2 sm:mb-0">
+            <span class="font-semibold text-gray-800">{{ event.location }}</span> •
+            <span>{{ event.date|date:"M d, Y" }} at {{ event.time|time:"g:i a" }}</span>
+          </p>
+          <span class="inline-flex items-center bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
+            {{ event.category.name }}
+          </span>
+        </div>
+
+        <!-- Description -->
+        <p class="text-gray-700 leading-relaxed mb-6">
+          {{ event.description|default:"No description available." }}
+        </p>
+
+        <!-- RSVP  -->
+        <div class="mt-6">
+          {% if user.is_authenticated %}
+            {% if user_rsvp %}
+              <form method="post" class="inline-block" onsubmit="return confirm('Are you sure to Cancel RSVP for this event?');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="cancel">
+                <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-600 text-black rounded-md">
+                  Cancel RSVP
+                </button>
+              </form>
+              <span class="ml-3 inline-block text-sm text-gray-600">You are registered for this event.</span>
+            {% else %}
+              <form method="post" class="inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="rsvp">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+                  RSVP to Event
+                </button>
+              </form>
+              <span class="ml-3 inline-block text-sm text-gray-600">Click if you want to attend in this Event.</span>
+            {% endif %}
+
+          {% endif %}
+        </div>
+
+        <!-- Participants -->
+        <div class="mt-8">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-xl font-semibold text-gray-800">Participants: {{ event.participants.count }}</h2>
+          </div>
+
+          {% if event.participants.exists %}
+            <ul class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+              {% for participant in event.participants.all %}
+                <li class="bg-gray-100 p-3 rounded-lg flex items-center gap-3">
+                  <div class="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold">
+                    {{ participant.first_name|default:participant.username|slice:":1"|upper }}
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-800">
+                      {% if participant.first_name or participant.last_name %}
+                        {{ participant.first_name }} {{ participant.last_name }}
+                      {% else %}
+                        {{ participant.username }}
+                      {% endif %}
+                    </p>
+                    <p class="text-sm text-gray-500">{{ participant.email }}</p>
+                    <p class="text-sm text-gray-500">{{participant.groups.first.name | default:"No Role"}}</p>
+
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-gray-500">No participants registered yet.</p>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    {% else %}
+      <p class="text-center text-gray-500">Event not found.</p>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,5 @@
+event_env/
+__pycache__
+node_modules
+venv
+.env

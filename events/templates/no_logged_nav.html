@@ -1,0 +1,38 @@
+{% load static %}
+<nav class="bg-blue-200 shadow-md sticky top-0 z-50 rounded-md">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <img src="{% static 'images/logo.jpeg' %}" alt="Logo" class="w-8 h-8">
+        <h1 class="text-2xl font-bold text-blue-600">Eventify</h1>
+      </div>
+
+      <!-- Desktop Links -->
+      <div class="hidden md:flex space-x-8 font-extrabold">
+        <a href="{% url 'home' %}" class="hover:text-blue-600">Home</a>
+        <a href="/events/home/#about" class="hover:text-blue-600">About Us</a>
+        <a href="/events/home/#all-events" class="hover:text-blue-600">All Events</a>
+        <a href="{% url 'sign-in' %}" class="hover:text-blue-600">Sign In</a>
+        <a href="{% url 'sign-up' %}" class="hover:text-blue-600">Sign Up</a>
+      </div>
+    <!-- Mobile Hamburger -->
+      <button id="menu-btn" class="md:hidden text-gray-700 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden flex-col md:hidden bg-white border-t border-gray-200">
+      <a href="{% url 'home' %}" class="block px-4 py-2 hover:bg-blue-50">Home</a>
+      <a href="{% url 'dashboard' %}" class="block px-4 py-2 hover:bg-blue-50">Dashboard</a>
+      <a href="/events/home/#about" class="block px-4 py-2 hover:bg-blue-50">About Us</a>
+      <a href="/events/home/#all-events" class="block px-4 py-2 hover:bg-blue-50">All Events</a>
+      <a href="{% url 'sign-in' %}" class="block px-4 py-2 hover:bg-blue-50">Sign In</a>
+      <a href="{% url 'sign-up' %}" class="block px-4 py-2 hover:bg-blue-50">Sign Up</a>
+    </div>
+ </nav>
+        

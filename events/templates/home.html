@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Home - Eventify{% endblock %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Background Image -->
+  <img src="{% static 'images/hero.jpeg' %}" 
+       alt="Hero" 
+       class="absolute inset-0 w-full h-full object-cover object-center">
+
+  <div class="relative z-10 text-center text-purple-400 px-6">
+    <h2 class="text-6xl font-extrabold mb-6 drop-shadow-xl tracking-wide">
+      Discover Amazing Events
+    </h2>
+    <p class="text-2xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Find your next favorite event in just a few clicks!
+    </p>
+  </div>
+</section>
+
+<!-- Search Section -->
+<section class="py-10 shadow-inner">
+  <div class="max-w-4xl mx-auto text-center">
+    <h3 class="text-2xl font-semibold mb-4">Search Events</h3>
+    <form method="GET" action="" class="flex justify-center gap-4">
+      <input type="text" name="q" value="{{ query }}" placeholder="Search by keyword..."
+             class="w-2/3 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+      <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+        Search
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- Events Section -->
+<section id="all-events" class="py-12">
+  <div class="max-w-7xl mx-auto px-6">
+    <h3 class="text-3xl font-bold text-center mb-10 text-red-300">All Our Events</h3>
+
+    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {% for event in events %}
+      <div class="bg-blue-200 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300 ease-in-out">
+
+        {% if event.asset and event.asset.url %}
+        <img src="{{ event.asset.url }}" alt="{{ event.name }}" class="w-full h-48 object-cover rounded-lg">
+        {% else %}
+         <img src="{% static 'images/default.jpeg' %}" alt="{{ event.name }}" class="w-full h-48 object-cover rounded-lg">
+        {% endif %}
+
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-1">{{ event.name }}</h3>
+          <p class="text-gray-600 text-sm mb-2">
+            {{ event.location }} • {{ event.date }} at {{ event.time }}
+          </p>
+          <p class="text-gray-700 mb-4">{{ event.description|slice:":80" }}</p>
+
+          <a href="{% url 'event-detail' event.id %}" 
+             class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+            Details
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-gray-500 col-span-full">No events found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

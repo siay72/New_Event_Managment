@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Admin Dashboard{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-8">
+{% for message in messages %}
+      <div class="mb-3 px-4 py-2 rounded 
+          {% if message.tags == 'success' %}bg-green-500 text-white
+          {% elif message.tags == 'error' %}bg-red-500 text-white
+          {% else %}bg-blue-500 text-white{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+  <h1 class="text-3xl font-bold mb-4">Admin Dashboard</h1>
+
+  <div class="mb-6">
+    <a href="{% url 'create-group' %}" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Create Group</a>
+    <a href="{% url 'show-groups' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Groups</a>
+  </div>
+
+  <div class="bg-white rounded shadow overflow-x-auto">
+    <table class="min-w-full">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-6 py-3 text-left text-sm font-semibold">NO.</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold">Name</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold">Email</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold">User ID</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold">Current Role</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr class="border-t">
+            <td class="px-6 py-4">{{ forloop.counter }}</td>
+            <td class="px-6 py-4">
+              {% if user.first_name or user.last_name %}
+                {{ user.first_name }} {{ user.last_name }} ({{ user.username }})
+              {% else %}
+                ({{ user.username }})
+              {% endif %}
+            </td>
+            <td class="px-6 py-4">{{ user.email }}</td>
+            <td class="px-6 py-4">{{ user.id }}</td>
+            <td class="px-6 py-4">
+              {% if user.groups_name %}
+                {{ user.groups_name }}
+              {% else %}
+                No Group Assigned
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 ">
+              {% comment %} Change Role  {% endcomment %}
+              <a href="{% url 'assign-role' user.id %}"
+                 class="inline-block bg-blue-500 text-white px-3 py-1 rounded mr-2 mb-2">
+                Change Role
+              </a>
+
+              {% comment %} Delete user  {% endcomment %}
+              <form method="post" class="inline-block" style="display:inline"
+                    onsubmit="return confirm('Are you sure you want to permanently delete this user? This action cannot be undone.');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_user">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <button type="submit" class="inline-block bg-red-600 text-white px-3 py-1 rounded">Delete user</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Eventify{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+    <body class="font-sans bg-gray-500 ">
+    <header class="bg-blue-200 shadow-md sticky">
+        {% if request.user.is_authenticated %}
+            {% include "logged_nav.html" %}
+        
+        {% else %}
+            {% include "no_logged_nav.html" %}
+        {% endif %}
+    </header>
+  
+  
+
+    <!-- Content -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+
+ <script src="{% static 'js/script.js' %}"></script>
+
+
+    <!-- Footer -->
+    <footer id="about" class="bg-gray-900 text-gray-300 py-10 mt-10 rounded-lg">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 px-6">
+        <div>
+          <h4 class="text-lg font-semibold mb-4">About Eventify</h4>
+          <p class="text-sm">Your go-to platform for managing, organizing, and discovering events.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="{% url 'home' %}" class="hover:text-blue-400">Home</a></li>
+            <li><a href="#" class="hover:text-blue-400">All Events</a></li>
+            <li><a href="#" class="hover:text-blue-400">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact</h4>
+          <p class="text-sm">+8801600000000<br>✉️ info@eventify.com</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+          <div class="flex space-x-4 text-gray-400">
+            <a href="#" class="hover:text-blue-400">Facebook</a>
+            <a href="#" class="hover:text-blue-400">Twitter</a>
+            <a href="#" class="hover:text-blue-400">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-sm text-gray-500 mt-10">
+        © 2025 Eventify. All Rights Reserved.
+      </div>
+    </footer>
+  </body>
+</html>
