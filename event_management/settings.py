@@ -148,7 +148,7 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 
 
-FRONTEND_URL = 'https://events-managment-2.onrender.com'
+FRONTEND_URL = 'https://new-event-managment.onrender.com'
 
 
 LOGIN_URL = 'sign-in'
