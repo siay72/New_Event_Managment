@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "https://events-managment-2.onrender.com",
+    "*",
 ]
 CSRF_TRUSTED_ORIGINS =['https://events-managment-2.onrender.com', 'http://127.0.0.1:8000']
 
