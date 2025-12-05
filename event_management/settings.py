@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "*",
 ]
-CSRF_TRUSTED_ORIGINS =['https://events-managment-2.onrender.com', 'http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS =['https://new-event-managment.onrender.com', 'http://127.0.0.1:8000']
 
 AUTH_USER_MODEL= 'users.CustomUser'
 
